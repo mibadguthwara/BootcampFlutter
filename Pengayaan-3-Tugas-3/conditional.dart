@@ -1,14 +1,14 @@
 import 'dart:io';
 
 void main(List<String> args) {
-  // soal1A();
+  soal1A();
   // soal1B();
 }
 
 soal1A() {
-  var isOpenToko = true;
+  var isOpenToko = "buka";
 
-  if (isOpenToko) {
+  if (isOpenToko == "buka") {
     print("Saya akan membeli telur");
   } else {
     print('Saya akan datang lagi esok hari');
