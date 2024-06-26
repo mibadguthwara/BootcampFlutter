@@ -3,7 +3,7 @@ void main(List<String> args) {
   var SegitigaAsli = Segitiga(0.5, 20, 30);
 
   // cetak nilai
-  print("${SegitigaAsli.luasSegitiga()}");
+  print(SegitigaAsli.luasSegitiga());
 }
 
 // membuat class
