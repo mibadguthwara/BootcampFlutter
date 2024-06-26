@@ -3,13 +3,7 @@ void main(List<String> args) {
   var SegitigaAsli = Segitiga(0.5, 20, 30);
 
   // cetak nilai
-  print("Rumus mencari luas segitiga : 1/2 * alas * tinggi");
-  print("");
-  print("nilai alas: ${SegitigaAsli.alas}");
-  print("nilai tinggi: ${SegitigaAsli.tinggi}");
-  print("");
-  print(
-      "1/2 * ${SegitigaAsli.alas} * ${SegitigaAsli.tinggi} = ${SegitigaAsli.luasSegitiga()}");
+  print("${SegitigaAsli.luasSegitiga()}");
 }
 
 // membuat class
