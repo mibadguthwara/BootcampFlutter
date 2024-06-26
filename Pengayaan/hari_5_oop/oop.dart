@@ -23,21 +23,21 @@ void main(List<String> args) {
   // dataBuku.tampilInformasiBuku();
 
   // // mobil
-  // final dataMobil = Mobil("Toyota", "Rush", 2023);
-  // dataMobil.turnOnCar();
-  // dataMobil.turnOffCar();
+  final dataMobil = Mobil("Toyota", "Rush", 2023);
+  dataMobil.turnOnCar();
+  dataMobil.turnOffCar();
 
   // kucing
-  var kucingRumah = Kucing("Miming", 2, 10, "Meong");
+  // var kucingRumah = Kucing("Miming", 2, 10, "Meong");
 
-  print(kucingRumah.nama);
-  print(kucingRumah.beratBadan);
-  print(kucingRumah.umur);
-  print(kucingRumah.suara);
+  // print(kucingRumah.nama);
+  // print(kucingRumah.beratBadan);
+  // print(kucingRumah.umur);
+  // print(kucingRumah.suara);
 
-  kucingRumah.berjalan();
-  print("Kucing melihat makanan");
-  kucingRumah.makan();
+  // kucingRumah.berjalan();
+  // print("Kucing melihat makanan");
+  // kucingRumah.makan();
 }
 
 // soal 1
