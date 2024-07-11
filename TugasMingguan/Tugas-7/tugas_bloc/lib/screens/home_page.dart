@@ -42,24 +42,27 @@ class HomePage extends StatelessWidget {
             return ListView.builder(
               itemCount: postList.length,
               itemBuilder: (_, index) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Card(
-                    color: Theme.of(context).primaryColor,
-                    child: ListTile(
-                      leading: Image.network(
-                        "https://sanbercode.com/assets/img/identity/logo@2x.jpg",
-                        height: 80,
-                        width: 100,
-                      ),
-                      title: Text(
-                        '${postList[index].title}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      subtitle: Text(
-                        '${postList[index].body}',
-                        style: const TextStyle(color: Colors.white),
+                return InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    child: Card(
+                      color: Theme.of(context).primaryColor,
+                      child: ListTile(
+                        leading: Image.network(
+                          "https://sanbercode.com/assets/img/identity/logo@2x.jpg",
+                          height: 80,
+                          width: 100,
+                        ),
+                        title: Text(
+                          '${postList[index].title}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          '${postList[index].body}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
@@ -67,7 +70,7 @@ class HomePage extends StatelessWidget {
               },
             );
           }
-          return Container();
+          return const SizedBox();
         },
       ),
     );
