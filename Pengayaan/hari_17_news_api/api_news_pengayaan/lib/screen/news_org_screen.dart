@@ -32,14 +32,14 @@ class NewsOrgScreen extends StatelessWidget {
               if (state is NewsLoadedState) {
                 List<NewsOrgModel> newsModel = state.news;
                 return Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: ListView.builder(
                     itemCount: newsModel.length,
                     itemBuilder: (context, index) {
                       var data = newsModel[index];
                       return Card(
                         child: Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
                               Text(
@@ -47,12 +47,13 @@ class NewsOrgScreen extends StatelessWidget {
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 6),
+                              const SizedBox(height: 10),
                               Image.network(
                                 data.urlToImage != null
                                     ? data.urlToImage.toString()
                                     : "https://www.mobil-mitsubishi.co.id/wp-content/uploads/2023/03/1636383523-new-front-bumper-grille-designjpg.jpg",
                               ),
+                              const SizedBox(height: 5),
                               Text(data.description.toString()),
                             ],
                           ),

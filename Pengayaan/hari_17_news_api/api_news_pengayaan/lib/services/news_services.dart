@@ -9,9 +9,8 @@ class NewsServices {
 
     Map<String, String> queryParams = {
       'q': 'apple',
-      'from': '2024-01-27',
-      'to': '2024-01-27',
-      'sortBy': 'popularity',
+      'from': '2024-27-01', // yyyy-dd-mm
+      'sortBy': 'publishedAt',
       'apiKey': 'f7bd548c5e874bb6bcfeea9a0fc30845',
     };
 
