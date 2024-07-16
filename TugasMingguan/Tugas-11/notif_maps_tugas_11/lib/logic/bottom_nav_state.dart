@@ -1,0 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+part of 'bottom_nav_cubit.dart';
+
+class BottomNavState extends Equatable {
+  final int index;
+  const BottomNavState({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
