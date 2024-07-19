@@ -1,0 +1,28 @@
+name: api_dan_test_tugas_13
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  http: ^1.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  http_mock_adapter: ^0.6.1
+  flutter_lints: ^3.0.0
+
+
+flutter:
+  uses-material-design: true
+
+
+
+
