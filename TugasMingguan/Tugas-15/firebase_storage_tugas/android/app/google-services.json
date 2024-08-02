@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "207587353100",
+    "project_id": "fs-tugas-15",
+    "storage_bucket": "fs-tugas-15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207587353100:android:68a44a30dfdd3364434429",
+        "android_client_info": {
+          "package_name": "com.example.firebase_storage_tugas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcaXfL5gHYacu6LW671jCjKDOpWUmvtuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
