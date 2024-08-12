@@ -3,87 +3,117 @@ import '/widgets/date_display_widget.dart';
 import 'package:flutter/material.dart';
 
 class OrderStatusPaymentPage extends StatefulWidget {
-  const OrderStatusPaymentPage({super.key});
+  final String text;
+  final String paymentMethodText;
+  final String paymentNomimalText;
+  const OrderStatusPaymentPage({
+    super.key,
+    required this.text,
+    required this.paymentMethodText,
+    required this.paymentNomimalText,
+  });
 
   @override
   State<OrderStatusPaymentPage> createState() => _OrderStatusPaymentPageState();
 }
 
 class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
-  int totalItems = 12;
+  late String _displayCustomerName;
+  late String _displayPaymentMethod;
+  late String _displayPaymentNominal;
+
+  @override
+  void initState() {
+    super.initState();
+    _displayCustomerName = widget.text;
+    _displayPaymentMethod = widget.paymentMethodText;
+    _displayPaymentNominal = widget.paymentNomimalText;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                const Column(
+      appBar: AppBar(
+        title: const Text("Status Pembayaran"),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.picture_as_pdf),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const MainPage();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.home),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
                   children: [
-                    Text(
+                    const Text(
                       "WANGISARI KUE",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       "RP 40.000",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 5),
-                    Row(
+                    const SizedBox(height: 5),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.check_circle,
                           color: Colors.green,
                         ),
-                        Text("Success"),
+                        Text("Berhasil"),
                       ],
                     ),
-                    SizedBox(height: 5),
-                    DateDisplayWidget(),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 5),
+                    const DateDisplayWidget(),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("ID Transaction"),
+                        const Text("Nama Pelanggan"),
                         Text(
-                          "#10124080081",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          _displayCustomerName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Customer Name"),
+                        const Text("Jenis Pembayaran"),
                         Text(
-                          "Ibad",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          _displayPaymentMethod,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Payment Method"),
-                        Text(
-                          "Tunai (Cash)",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Divider(height: 3, color: Colors.black),
-                    ListTile(
+                    const SizedBox(height: 10),
+                    const Divider(height: 3, color: Colors.black),
+                    const ListTile(
                       title: Text(
                         "Lemper Ayam",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -111,8 +141,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                         ],
                       ),
                     ),
-                    Divider(height: 3, color: Colors.black),
-                    ListTile(
+                    const Divider(height: 3, color: Colors.black),
+                    const ListTile(
                       title: Text(
                         "Risol Mayones",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -140,102 +170,64 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                         ],
                       ),
                     ),
-                    Divider(height: 3, color: Colors.black),
-                    SizedBox(height: 20),
-                    Row(
+                    const Divider(height: 3, color: Colors.black),
+                    const SizedBox(height: 20),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Items"),
+                        Text("Jumlah Makanan"),
                         Text(
                           "17",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
+                    const SizedBox(height: 10),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Prices"),
+                        Text("Total Pembayaran"),
                         Text(
                           "Rp 46.000",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Payment"),
+                        const Text("Jumlah yang dibayarkan"),
                         Text(
-                          "Rp 50.000",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          _displayPaymentNominal,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
+                    const SizedBox(height: 10),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Change"),
+                        Text("Kembalian"),
                         Text(
                           "Rp 4.000",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
-                    Text("Terima kasih telah melakukan pembelian"),
-                    Text(
-                      "Sampai ketemu kembali, \njangan ragu untuk memberi saran kepada kami",
+                    const SizedBox(height: 30),
+                    const Text(
+                      "Terima kasih telah melakukan pembelian",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const Text(
+                      "Sampai ketemu kembali",
+                      style: TextStyle(fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ],
                 ),
-                Positioned(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                          ),
-                          child: const Text(
-                            "Convert to PDF",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 0,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const MainPage();
-                                },
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.home),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

@@ -10,7 +10,7 @@ class ReportOrderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Orders Data Report"),
+        title: const Text("Laporan Pesanan"),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
@@ -22,14 +22,14 @@ class ReportOrderPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total Orders",
+                  "Total Pesanan",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  "6",
+                  "1",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -40,15 +40,22 @@ class ReportOrderPage extends StatelessWidget {
             const SizedBox(height: 10),
             InkWell(
               child: const Card(
-                color: Colors.amber,
-                child: ListTile(
-                  title: DateDisplayWidget(),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("#10124080081"),
-                      Text("Rp 40.000 (17)"),
-                    ],
+                color: Colors.blueAccent,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: DateDisplayWidget(),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Ibad",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text("Rp 40.000 (17)"),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -63,35 +70,6 @@ class ReportOrderPage extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 10),
-            const Card(
-              color: Colors.amber,
-              child: ListTile(
-                title: DateDisplayWidget(),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("#10124080081"),
-                    Text("Rp 40.000 (17)"),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Card(
-              color: Colors.amber,
-              child: ListTile(
-                title: DateDisplayWidget(),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("#10124080081"),
-                    Text("Rp 40.000 (17)"),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
           ],
         ),
       ),

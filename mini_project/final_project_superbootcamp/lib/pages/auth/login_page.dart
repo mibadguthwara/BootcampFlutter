@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../main_page.dart';
@@ -12,6 +15,29 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isChecked = false;
+  final _emailLoginController = TextEditingController();
+  final _passwordLoginController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _login() async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailLoginController.text,
+        password: _passwordLoginController.text,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainPage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Check your email and password or register"),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
+                  controller: _emailLoginController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     labelText: "Email",
@@ -51,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  controller: _passwordLoginController,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: const InputDecoration(
                     labelText: "Password",
@@ -62,7 +90,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20),
                 CheckboxListTile(
-                  // secondary: const Icon(Icons.playlist_add_check_rounded),
                   contentPadding: EdgeInsets.zero,
                   title: const Text(
                     "Saya menyetujui menggunakan sistem sesuai peraturan yang berlaku",
@@ -78,14 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                 ElevatedButton(
                   onPressed: isChecked
                       ? () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const MainPage();
-                              },
-                            ),
-                          );
+                          _login();
                         }
                       : null,
                   style:

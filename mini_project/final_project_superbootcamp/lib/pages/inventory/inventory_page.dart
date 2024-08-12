@@ -1,5 +1,5 @@
-import 'package:final_project_superbootcamp/pages/inventory/inventory_add_product_page.dart';
-import 'package:final_project_superbootcamp/pages/inventory/inventory_detail_product_page.dart';
+import '/pages/inventory/inventory_add_page.dart';
+import '/pages/inventory/inventory_detail_page.dart';
 import 'package:flutter/material.dart';
 
 import '../main_page.dart';
@@ -31,7 +31,7 @@ class _InventoryPageState extends State<InventoryPage> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text("Inventory"),
+        title: const Text("Data Makanan"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -40,7 +40,7 @@ class _InventoryPageState extends State<InventoryPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const InventoryAddProductPage();
+                    return const InventoryAddPage();
                   },
                 ),
               );
@@ -61,7 +61,7 @@ class _InventoryPageState extends State<InventoryPage> {
                       label: Row(
                         children: [
                           Text(
-                            "10",
+                            "1",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -77,7 +77,7 @@ class _InventoryPageState extends State<InventoryPage> {
                       label: Row(
                         children: [
                           Text(
-                            "198",
+                            "40",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -113,22 +113,17 @@ class _InventoryPageState extends State<InventoryPage> {
                         _selectedValue = newValue!;
                       });
                     },
-                    dropdownColor:
-                        Colors.grey[200], // Warna latar belakang dropdown
+                    dropdownColor: Colors.grey[200],
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const Divider(
-                height: 3,
-                color: Colors.black,
-              ),
               Column(
                 children: [
                   InkWell(
                     child: ListTile(
                       leading: Image.asset(
-                        "assets/images/flutter.png",
+                        "assets/images/lemper_ayam.jpg",
                         height: 50,
                         width: 50,
                       ),
@@ -147,17 +142,13 @@ class _InventoryPageState extends State<InventoryPage> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const InventoryDetailProductPage();
+                        return const InventoryDetailPage();
                       }));
                     },
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/onde_onde.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -173,13 +164,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/nagasari.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -195,13 +182,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/gemblong.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -217,13 +200,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/ketan_serundeng.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -239,13 +218,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/kue_sus.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -261,13 +236,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/donut_bomboloni.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -283,13 +254,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/pie_buah.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -305,13 +272,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/risol_mayones.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -327,13 +290,9 @@ class _InventoryPageState extends State<InventoryPage> {
                       ],
                     ),
                   ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
-                  ),
                   ListTile(
                     leading: Image.asset(
-                      "assets/images/flutter.png",
+                      "assets/images/kue_lapis.jpg",
                       height: 50,
                       width: 50,
                     ),
@@ -348,10 +307,6 @@ class _InventoryPageState extends State<InventoryPage> {
                         Text("Stock: 3"),
                       ],
                     ),
-                  ),
-                  const Divider(
-                    height: 3,
-                    color: Colors.black,
                   ),
                 ],
               )

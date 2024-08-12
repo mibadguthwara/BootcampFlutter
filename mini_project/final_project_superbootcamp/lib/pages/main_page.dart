@@ -1,9 +1,9 @@
-import 'package:final_project_superbootcamp/pages/auth/login_page.dart';
-import 'package:final_project_superbootcamp/pages/inventory/inventory_page.dart';
-import 'package:final_project_superbootcamp/pages/order/order_product_page.dart';
-import 'package:final_project_superbootcamp/pages/report/report_page.dart';
-import 'package:final_project_superbootcamp/widgets/date_display_widget.dart';
-import 'package:final_project_superbootcamp/widgets/time_display_widget.dart';
+import '/pages/auth/login_page.dart';
+import '/pages/inventory/inventory_page.dart';
+import '/pages/order/order_page.dart';
+import '/pages/report/report_page.dart';
+import '/widgets/date_display_widget.dart';
+import '/widgets/time_display_widget.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatelessWidget {
@@ -63,7 +63,7 @@ class MainPage extends StatelessWidget {
                     ),
                     child: const Center(
                       child: Text(
-                        "Order Product",
+                        "Buat Pesanan",
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
@@ -74,7 +74,7 @@ class MainPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const OrderProductPage();
+                          return const OrderPage();
                         },
                       ),
                     );
@@ -96,7 +96,7 @@ class MainPage extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Text(
-                              "Inventory",
+                              "Data Makanan",
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
@@ -126,7 +126,7 @@ class MainPage extends StatelessWidget {
                           ),
                           child: const Center(
                             child: Text(
-                              "Report",
+                              "Laporan Transaksi",
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             ),

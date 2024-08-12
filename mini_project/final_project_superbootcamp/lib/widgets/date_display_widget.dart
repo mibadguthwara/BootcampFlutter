@@ -6,17 +6,16 @@ class DateDisplayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan tanggal dan waktu saat ini
     DateTime now = DateTime.now();
 
-    // Format tanggal ke string menggunakan intl package
-    String formattedDate = DateFormat('EEEE, dd MMMM yyyy').format(now);
+    DateFormat formatter = DateFormat('EEEE, dd MMMM yyyy', 'id_ID');
+
+    String formattedDate = formatter.format(now);
 
     return Text(
       formattedDate,
-      // textAlign: TextAlign.center,
       style: const TextStyle(
-        fontSize: 18,
+        fontSize: 16,
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:final_project_superbootcamp/pages/main_page.dart';
 import 'package:final_project_superbootcamp/pages/report/report_order_page.dart';
-import 'package:final_project_superbootcamp/pages/report/report_sold_item_page.dart';
+import 'package:final_project_superbootcamp/pages/report/report_sold_page.dart';
 import 'package:flutter/material.dart';
+
+import 'report_income_page.dart';
 
 class ReportPage extends StatelessWidget {
   const ReportPage({super.key});
@@ -23,7 +25,7 @@ class ReportPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text("Data Report"),
+        title: const Text("Halaman Laporan"),
         centerTitle: true,
       ),
       body: Center(
@@ -58,7 +60,7 @@ class ReportPage extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              "Orders",
+                              "Pesanan",
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
@@ -101,7 +103,7 @@ class ReportPage extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              "Sold Items",
+                              "Terjual",
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             ),
@@ -113,7 +115,7 @@ class ReportPage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return const ReportSoldItemPage();
+                              return const ReportSoldPage();
                             },
                           ),
                         );
@@ -138,20 +140,29 @@ class ReportPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Rp 594.000",
+                        "Rp 46.000",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        "Incomes",
+                        "Pendapatan",
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const ReportIncomePage();
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),
