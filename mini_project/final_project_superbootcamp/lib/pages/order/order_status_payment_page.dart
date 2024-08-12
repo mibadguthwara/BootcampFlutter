@@ -3,14 +3,21 @@ import '/widgets/date_display_widget.dart';
 import 'package:flutter/material.dart';
 
 class OrderStatusPaymentPage extends StatefulWidget {
-  final String text;
-  final String paymentMethodText;
-  final String paymentNomimalText;
+  final String receiveNameCustomer;
+  final String receivePaymentMethodText;
+  final String receivePaymentNomimalText;
+  final String receivePaymentChangeText;
+  final String receivePaymentTotal;
+  final String receiveTotalItems;
+
   const OrderStatusPaymentPage({
     super.key,
-    required this.text,
-    required this.paymentMethodText,
-    required this.paymentNomimalText,
+    required this.receiveNameCustomer,
+    required this.receivePaymentMethodText,
+    required this.receivePaymentNomimalText,
+    required this.receivePaymentChangeText,
+    required this.receiveTotalItems,
+    required this.receivePaymentTotal,
   });
 
   @override
@@ -21,13 +28,19 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
   late String _displayCustomerName;
   late String _displayPaymentMethod;
   late String _displayPaymentNominal;
+  late String _displayPaymentChange;
+  late String _displayPaymentTotal;
+  late String _displayTotalItems;
 
   @override
   void initState() {
     super.initState();
-    _displayCustomerName = widget.text;
-    _displayPaymentMethod = widget.paymentMethodText;
-    _displayPaymentNominal = widget.paymentNomimalText;
+    _displayCustomerName = widget.receiveNameCustomer;
+    _displayPaymentMethod = widget.receivePaymentMethodText;
+    _displayPaymentNominal = widget.receivePaymentNomimalText;
+    _displayPaymentChange = widget.receivePaymentChangeText;
+    _displayPaymentTotal = widget.receivePaymentTotal;
+    _displayTotalItems = widget.receiveTotalItems;
   }
 
   @override
@@ -71,10 +84,21 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "RP 40.000",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Rp",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          _displayPaymentTotal,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 5),
                     const Row(
@@ -172,24 +196,35 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                     ),
                     const Divider(height: 3, color: Colors.black),
                     const SizedBox(height: 20),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Jumlah Makanan"),
+                        const Text("Jumlah Makanan"),
                         Text(
-                          "17",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          _displayTotalItems,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Pembayaran"),
-                        Text(
-                          "Rp 46.000",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        const Text("Total Pembayaran"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Rp",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              _displayPaymentTotal,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -198,20 +233,42 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Jumlah yang dibayarkan"),
-                        Text(
-                          _displayPaymentNominal,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Rp",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              _displayPaymentNominal,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Kembalian"),
-                        Text(
-                          "Rp 4.000",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        const Text("Kembalian"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Rp",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              _displayPaymentChange,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ],
                     ),

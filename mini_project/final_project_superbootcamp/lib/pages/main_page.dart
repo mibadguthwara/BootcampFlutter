@@ -1,3 +1,5 @@
+import 'package:final_project_superbootcamp/pages/halaman_percobaan.dart';
+
 import '/pages/auth/login_page.dart';
 import '/pages/inventory/inventory_page.dart';
 import '/pages/order/order_page.dart';
@@ -178,6 +180,15 @@ class MainPage extends StatelessWidget {
                   "Point of Sell Version 1.0",
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 50),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const HalamanPercobaan();
+                      }));
+                    },
+                    child: const Text("Halaman Percobaan"))
               ],
             ),
           ),

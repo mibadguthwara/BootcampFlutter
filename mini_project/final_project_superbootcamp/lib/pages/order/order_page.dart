@@ -15,22 +15,22 @@ class _OrderPageState extends State<OrderPage> {
   final TextEditingController nameCustomerOrder = TextEditingController();
   int priceItems = 3000;
   int stockItems = 40;
-  int _counter = 0;
+  int counter = 0;
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
-      if (_counter >= stockItems) {
-        _counter = stockItems;
+      counter++;
+      if (counter >= stockItems) {
+        counter = stockItems;
       }
     });
   }
 
   void _decrementCounter() {
     setState(() {
-      _counter--;
-      if (_counter <= 0) {
-        _counter = 0;
+      counter--;
+      if (counter <= 0) {
+        counter = 0;
       }
     });
   }
@@ -39,6 +39,8 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     final String formattedPriceItems =
         NumberFormat("#,###", "id_ID").format(priceItems);
+
+    final int totalPembayaran = priceItems * counter;
 
     return Scaffold(
       appBar: AppBar(
@@ -115,6 +117,7 @@ class _OrderPageState extends State<OrderPage> {
               const DateDisplayWidget(),
               const SizedBox(height: 5),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 controller: nameCustomerOrder,
                 keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
@@ -137,7 +140,7 @@ class _OrderPageState extends State<OrderPage> {
                           const Icon(Icons.shopping_basket),
                           const SizedBox(width: 5),
                           Text(
-                            "$_counter",
+                            "$counter",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -150,7 +153,7 @@ class _OrderPageState extends State<OrderPage> {
                           const Text("Total Pembayaran:"),
                           const SizedBox(width: 5),
                           Text(
-                            "Rp ${priceItems * _counter}",
+                            "Rp $totalPembayaran",
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -189,7 +192,7 @@ class _OrderPageState extends State<OrderPage> {
                           children: [
                             const Text("Stock: "),
                             Text(
-                              "${stockItems - _counter}",
+                              "${stockItems - counter}",
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -208,7 +211,7 @@ class _OrderPageState extends State<OrderPage> {
                               icon: const Icon(Icons.indeterminate_check_box),
                             ),
                             Text(
-                              "$_counter",
+                              "$counter",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -222,7 +225,7 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          "Rp ${priceItems * _counter}",
+                          "Rp ${priceItems * counter}",
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -237,12 +240,18 @@ class _OrderPageState extends State<OrderPage> {
               const SizedBox(height: 40),
               ElevatedButton.icon(
                 onPressed: () {
-                  final inputNameCustomerOrder = nameCustomerOrder.text;
+                  final sendNameCustomerOrder = nameCustomerOrder.text;
+                  final sendTotalPembayaran = totalPembayaran.toString();
+                  final sendTotalItems = counter.toString();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return OrderPaymentPage(text: inputNameCustomerOrder);
+                        return OrderPaymentPage(
+                          receiveNameCustomer: sendNameCustomerOrder,
+                          receivePaymentTotal: sendTotalPembayaran,
+                          receiveTotalItems: sendTotalItems,
+                        );
                       },
                     ),
                   );

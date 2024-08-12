@@ -4,8 +4,16 @@ import '/widgets/date_display_widget.dart';
 import 'package:flutter/material.dart';
 
 class OrderPaymentPage extends StatefulWidget {
-  final String text;
-  const OrderPaymentPage({super.key, required this.text});
+  final String receiveNameCustomer;
+  final String receivePaymentTotal;
+  final String receiveTotalItems;
+
+  const OrderPaymentPage({
+    super.key,
+    required this.receiveNameCustomer,
+    required this.receivePaymentTotal,
+    required this.receiveTotalItems,
+  });
 
   @override
   State<OrderPaymentPage> createState() => _OrderPaymentPageState();
@@ -13,13 +21,37 @@ class OrderPaymentPage extends StatefulWidget {
 
 class _OrderPaymentPageState extends State<OrderPaymentPage> {
   final TextEditingController inputPaymentNominal = TextEditingController();
-  String _selectedValue = 'option1'; // Nilai awal
   late String _displayCustomerName;
+  late String _displayPaymentTotal;
+  late String _displayTotalItems;
+  int _changePayment = 0;
+  String _selectedValue = 'option1';
 
   @override
   void initState() {
     super.initState();
-    _displayCustomerName = widget.text;
+    _displayCustomerName = widget.receiveNameCustomer;
+    _displayPaymentTotal = widget.receivePaymentTotal;
+    _displayTotalItems = widget.receiveTotalItems;
+    inputPaymentNominal.addListener(_updateHasilPengurangan);
+  }
+
+  void _updateHasilPengurangan() {
+    final String text = inputPaymentNominal.text;
+    final String intNominal = _displayPaymentTotal.toString();
+    final int totalNominal = int.tryParse(intNominal) ?? 0;
+    final int nominal = int.tryParse(text) ?? 0;
+
+    setState(() {
+      _changePayment = nominal - totalNominal;
+    });
+  }
+
+  @override
+  void dispose() {
+    inputPaymentNominal.removeListener(_updateHasilPengurangan);
+    inputPaymentNominal.dispose();
+    super.dispose();
   }
 
   @override
@@ -112,19 +144,19 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              const Chip(
+              Chip(
                 label: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.shopping_basket),
-                          SizedBox(width: 5),
+                          const Icon(Icons.shopping_basket),
+                          const SizedBox(width: 5),
                           Text(
-                            "17",
-                            style: TextStyle(
+                            _displayTotalItems,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -133,14 +165,27 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                       ),
                       Row(
                         children: [
-                          Text("Total Pembayaran:"),
-                          SizedBox(width: 5),
-                          Text(
-                            "Rp 40.000",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const Text("Total Pembayaran:"),
+                          const SizedBox(width: 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Rp",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                _displayPaymentTotal,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       )
@@ -214,7 +259,7 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                 controller: inputPaymentNominal,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: "masukkan nominal",
+                  labelText: "Nominal (Rp)",
                   focusedBorder: OutlineInputBorder(),
                   border: OutlineInputBorder(),
                   // prefixIcon: Icon(Icons.monetization_on_sharp),
@@ -226,34 +271,45 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
           ],
         ),
         const SizedBox(height: 15),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               "Kembalian:",
               style: TextStyle(fontSize: 16),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 24.0),
-              child: Text(
-                "Rp 10.000",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text("Rp"),
+                const SizedBox(width: 10),
+                Padding(
+                  padding: const EdgeInsets.only(right: 24.0),
+                  child: Text(
+                    "$_changePayment",
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
         const SizedBox(height: 40),
         ElevatedButton.icon(
           onPressed: () {
-            final inputPaymentNominalData = inputPaymentNominal.text;
+            final sendPaymentNominalData = inputPaymentNominal.text;
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) {
                   return OrderStatusPaymentPage(
-                    text: _displayCustomerName,
-                    paymentMethodText: "Tunai (Cash)",
-                    paymentNomimalText: inputPaymentNominalData,
+                    receiveNameCustomer: _displayCustomerName,
+                    receivePaymentMethodText: "Tunai (Cash)",
+                    receivePaymentNomimalText: sendPaymentNominalData,
+                    receivePaymentChangeText: _changePayment.toString(),
+                    receiveTotalItems: _displayTotalItems,
+                    receivePaymentTotal: _displayPaymentTotal,
                   );
                 },
               ),
@@ -339,9 +395,12 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
               MaterialPageRoute(
                 builder: (context) {
                   return OrderStatusPaymentPage(
-                    text: _displayCustomerName,
-                    paymentMethodText: "QRIS (Cashless)",
-                    paymentNomimalText: "",
+                    receiveNameCustomer: _displayCustomerName,
+                    receivePaymentMethodText: "QRIS (Cashless)",
+                    receivePaymentNomimalText: _displayPaymentTotal,
+                    receivePaymentChangeText: "0",
+                    receiveTotalItems: _displayTotalItems,
+                    receivePaymentTotal: _displayPaymentTotal,
                   );
                 },
               ),
