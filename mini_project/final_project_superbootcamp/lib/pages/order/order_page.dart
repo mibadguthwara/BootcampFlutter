@@ -1,3 +1,4 @@
+import '../../widgets/time_display_widget.dart';
 import '/pages/main_page.dart';
 import '/pages/order/order_payment_page.dart';
 import '/widgets/date_display_widget.dart';
@@ -114,8 +115,14 @@ class _OrderPageState extends State<OrderPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const DateDisplayWidget(),
-              const SizedBox(height: 5),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DateDisplayWidget(),
+                  TimeDisplayWidget(),
+                ],
+              ),
+              const SizedBox(height: 15),
               TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 controller: nameCustomerOrder,
@@ -137,20 +144,24 @@ class _OrderPageState extends State<OrderPage> {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.shopping_basket),
-                          const SizedBox(width: 5),
-                          Text(
-                            "$counter",
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              const Icon(Icons.shopping_basket_outlined),
+                              const SizedBox(width: 5),
+                              Text(
+                                "$counter",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          const Text("Total Pembayaran:"),
+                          const Icon(Icons.payments_outlined),
                           const SizedBox(width: 5),
                           Text(
                             "Rp $totalPembayaran",
@@ -160,7 +171,7 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -43,7 +43,7 @@ class _TimeDisplayWidgetState extends State<TimeDisplayWidget> {
       _currentTime,
       textAlign: TextAlign.center,
       style: const TextStyle(
-        fontSize: 18,
+        fontSize: 16,
       ),
     );
   }

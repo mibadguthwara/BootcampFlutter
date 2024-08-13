@@ -1,3 +1,5 @@
+import 'package:final_project_superbootcamp/widgets/time_display_widget.dart';
+
 import '/pages/main_page.dart';
 import '/pages/order/order_status_payment_page.dart';
 import '/widgets/date_display_widget.dart';
@@ -126,22 +128,34 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const DateDisplayWidget(),
-              const SizedBox(height: 5),
-              Row(
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Nama Pelanggan:",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    _displayCustomerName,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  DateDisplayWidget(),
+                  TimeDisplayWidget(),
                 ],
+              ),
+              const SizedBox(height: 15),
+              Chip(
+                label: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Nama Pelanggan:",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        _displayCustomerName,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Chip(
@@ -152,7 +166,7 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.shopping_basket),
+                          const Icon(Icons.shopping_basket_outlined),
                           const SizedBox(width: 5),
                           Text(
                             _displayTotalItems,
@@ -165,30 +179,17 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                       ),
                       Row(
                         children: [
-                          const Text("Total Pembayaran:"),
+                          const Icon(Icons.payments_outlined),
                           const SizedBox(width: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Rp",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                _displayPaymentTotal,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            _displayPaymentTotal,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -369,22 +370,22 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
             ),
 
             /// clip loading
-            Chip(
-              avatar: Icon(Icons.update),
-              label: Text("Waiting for information"),
-              backgroundColor: Colors.yellow,
-            ),
-
-            /// clip success
             // Chip(
-            //   avatar: Icon(
-            //     Icons.done,
-            //     color: Colors.white,
-            //   ),
-            //   label: Text("Payment Success"),
-            //   labelStyle: TextStyle(color: Colors.white),
-            //   backgroundColor: Colors.green,
+            //   avatar: Icon(Icons.update),
+            //   label: Text("Waiting for information"),
+            //   backgroundColor: Colors.yellow,
             // ),
+
+            // / clip success
+            Chip(
+              avatar: Icon(
+                Icons.done,
+                color: Colors.white,
+              ),
+              label: Text("Payment Success"),
+              labelStyle: TextStyle(color: Colors.white),
+              backgroundColor: Colors.green,
+            ),
           ],
         ),
         const SizedBox(height: 40),
