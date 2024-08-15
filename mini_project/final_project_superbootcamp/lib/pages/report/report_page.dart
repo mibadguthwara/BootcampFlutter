@@ -1,4 +1,5 @@
 import 'package:final_project_superbootcamp/pages/main_page.dart';
+import 'package:final_project_superbootcamp/pages/report/pdf_count_page.dart';
 import 'package:final_project_superbootcamp/pages/report/report_order_page.dart';
 import 'package:final_project_superbootcamp/pages/report/report_sold_page.dart';
 import 'package:flutter/material.dart';
@@ -53,12 +54,7 @@ class ReportPage extends StatelessWidget {
                         child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "6",
-                              style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
+                            PdfCountPage(),
                             Text(
                               "Pesanan",
                               style: TextStyle(fontSize: 16),

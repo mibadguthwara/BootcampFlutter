@@ -1,4 +1,4 @@
-import '/pages/coba/halaman_percobaan.dart';
+// import '/pages/coba/halaman_percobaan.dart';
 import '/pages/auth/login_page.dart';
 import '/pages/inventory/inventory_page.dart';
 import '/pages/order/order_page.dart';
@@ -180,16 +180,16 @@ class MainPage extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(height: 30),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const HalamanPercobaan();
-                    }));
-                  },
-                  child: const Text("Halaman Percobaan"),
-                ),
+                // const SizedBox(height: 30),
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) {
+                //       return const HalamanPercobaan();
+                //     }));
+                //   },
+                //   child: const Text("Halaman Percobaan"),
+                // ),
               ],
             ),
           ),

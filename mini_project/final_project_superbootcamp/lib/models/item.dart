@@ -1,21 +1,15 @@
 class Item {
-  final String name;
+  String id;
+  String name;
+  int price;
   int stock;
-  int addedCount;
-  final double price;
+  int quantity;
 
   Item({
+    required this.id,
     required this.name,
-    required this.stock,
     required this.price,
-    this.addedCount = 0,
+    required this.stock,
+    this.quantity = 0,
   });
-
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
-      name: json['name'],
-      stock: json['stock'],
-      price: json['price'].toDouble(),
-    );
-  }
 }

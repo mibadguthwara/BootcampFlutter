@@ -42,10 +42,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBWuW2YqLveRBMRyM_uD__QHlqRyiwgLWo',
-    appId: '1:632719829135:android:1ee846e999a016fc55a8fa',
-    messagingSenderId: '632719829135',
-    projectId: 'final-project-superbootcamp',
-    storageBucket: 'final-project-superbootcamp.appspot.com',
+    apiKey: 'AIzaSyDOji6HVSsCD6mqv8VJtKhJC5SS0WPRo10',
+    appId: '1:257603984684:android:20ad9607159574fb5e6089',
+    messagingSenderId: '257603984684',
+    projectId: 'fp-superbootcamp',
+    storageBucket: 'fp-superbootcamp.appspot.com',
   );
 }
