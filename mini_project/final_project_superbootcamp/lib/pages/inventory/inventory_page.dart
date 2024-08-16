@@ -1,7 +1,8 @@
-import '/pages/inventory/inventory_add_page.dart';
-import '/pages/inventory/inventory_detail_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import '../../models/item.dart';
+import 'inventory_add_page.dart';
+import 'inventory_detail_page.dart';
 import '../main_page.dart';
 
 class InventoryPage extends StatefulWidget {
@@ -12,7 +13,32 @@ class InventoryPage extends StatefulWidget {
 }
 
 class _InventoryPageState extends State<InventoryPage> {
-  String _selectedValue = 'Alphabet (A-Z)';
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, Item> _items = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchItems();
+  }
+
+  void _fetchItems() async {
+    var snapshot = await _firestore.collection('items').get();
+    setState(() {
+      _items = {
+        for (var doc in snapshot.docs)
+          doc.id: Item(
+            id: doc.id,
+            name: doc['name'],
+            price: doc['price'],
+            stock: doc['stock'],
+            imageUrl: doc['image_url'],
+            description: doc['description'],
+            quantity: 0,
+          ),
+      };
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,269 +75,166 @@ class _InventoryPageState extends State<InventoryPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-          child: Column(
-            children: [
-              const Row(
-                children: [
-                  Flexible(
-                    child: Chip(
-                      label: Row(
-                        children: [
-                          Text(
-                            "1",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 5),
-                          Text("items"),
-                        ],
-                      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Chip(
+              label: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Display the total count of items
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _firestore.collection('items').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return const Center(
+                              child: Text('No items available.'));
+                        }
+
+                        final itemCount = snapshot.data!.docs.length;
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$itemCount',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            const Text(
+                              "items",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Flexible(
-                    child: Chip(
-                      label: Row(
-                        children: [
-                          Text(
-                            "40",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 5),
-                          Text("stocks"),
-                        ],
-                      ),
+
+                    // Display the total stock of items
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _firestore.collection('items').snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return const Center(
+                              child: Text('No items available.'));
+                        }
+
+                        final totalStock = snapshot.data!.docs
+                            .map((doc) => doc['stock'] as int)
+                            .reduce((a, b) => a + b);
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$totalStock',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            const Text(
+                              "stocks",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text("Urutkan list berdasarkan"),
-                  const SizedBox(width: 10),
-                  DropdownButton<String>(
-                    value: _selectedValue,
-                    items: <String>[
-                      'Alphabet (A-Z)',
-                      'Alphabet (Z-A)',
-                      'Stock (0-9)',
-                      'Stock (9-0)'
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedValue = newValue!;
-                      });
-                    },
-                    dropdownColor: Colors.grey[200],
-                  ),
-                ],
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _firestore.collection('items').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data == null) {
+                    return const Center(child: Text('No items available.'));
+                  }
+
+                  return ListView(
+                    children: _items.values.map(
+                      (item) {
+                        return InkWell(
+                          child: ListTile(
+                            leading: SizedBox(
+                              child: Image.network(
+                                item.imageUrl,
+                                height: 80,
+                                width: 80,
+                              ),
+                            ),
+                            title: Text(
+                              item.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              "Rp ${item.price}",
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            trailing: Text(
+                              "Stok: ${item.stock}",
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return InventoryDetailPage(
+                                    id: item.id,
+                                    name: item.name,
+                                    stock: item.stock,
+                                    price: item.price,
+                                    imageUrl: item.imageUrl,
+                                    description: item.description,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ).toList(),
+                  );
+                },
               ),
-              const SizedBox(height: 10),
-              Column(
-                children: [
-                  InkWell(
-                    child: ListTile(
-                      leading: Image.asset(
-                        "assets/images/lemper_ayam.jpg",
-                        height: 50,
-                        width: 50,
-                      ),
-                      title: const Text(
-                        "Lemper Ayam",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Rp 2.500"),
-                          Text("Stock: 40"),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const InventoryDetailPage();
-                      }));
-                    },
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/onde_onde.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Onde-onde",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 1.500"),
-                        Text("Stock: 15"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/nagasari.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Nagasari",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 1.500"),
-                        Text("Stock: 30"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/gemblong.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Gemblong",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 2.000"),
-                        Text("Stock: 27"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/ketan_serundeng.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Ketan Serundeng",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 2.500"),
-                        Text("Stock: 10"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/kue_sus.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Kue Sus",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 4.000"),
-                        Text("Stock: 10"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/donut_bomboloni.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Donut Bomboloni",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 5.000"),
-                        Text("Stock: 14"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/pie_buah.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Pie Buah",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 2.500"),
-                        Text("Stock: 5"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/risol_mayones.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Risol Mayones",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 2.000"),
-                        Text("Stock: 8"),
-                      ],
-                    ),
-                  ),
-                  ListTile(
-                    leading: Image.asset(
-                      "assets/images/kue_lapis.jpg",
-                      height: 50,
-                      width: 50,
-                    ),
-                    title: const Text(
-                      "Kue Lapis",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Rp 2.000"),
-                        Text("Stock: 3"),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

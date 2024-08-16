@@ -1,9 +1,24 @@
-import '/pages/inventory/inventory_edit_page.dart';
-import '/pages/inventory/inventory_page.dart';
+import 'inventory_edit_page.dart';
+import 'inventory_page.dart';
 import 'package:flutter/material.dart';
 
 class InventoryDetailPage extends StatelessWidget {
-  const InventoryDetailPage({super.key});
+  final String id;
+  final String imageUrl;
+  final String name;
+  final int stock;
+  final int price;
+  final String description;
+
+  const InventoryDetailPage({
+    super.key,
+    required this.name,
+    required this.stock,
+    required this.price,
+    required this.description,
+    required this.imageUrl,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,32 +34,33 @@ class InventoryDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(
-                "assets/images/lemper_ayam.jpg",
+              Image.network(
+                imageUrl,
                 height: 200,
               ),
               const SizedBox(height: 20),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Lemper Ayam",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    name,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Rp 2.500",
-                    style: TextStyle(fontSize: 20),
+                    "Rp $price",
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Stok: 40",
-                style: TextStyle(fontSize: 16),
+              Text(
+                "Stok: $stock",
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel ornare dolor. Vivamus eget metus in massa scelerisque accumsan id id sem. Phasellus eget ex in eros ultrices ultricies. Nullam ultrices massa at ipsum vestibulum, ut venenatis felis interdum. Nam commodo mollis nisi, id porta felis consequat in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus ante id urna tempor suscipit.",
+              Text(
+                description,
               ),
               const SizedBox(height: 50),
               Row(
@@ -58,7 +74,14 @@ class InventoryDetailPage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return const InventoryEditPage();
+                              return InventoryEditPage(
+                                id: id,
+                                name: name,
+                                stock: stock,
+                                price: price,
+                                imageUrl: imageUrl,
+                                description: description,
+                              );
                             },
                           ),
                         );

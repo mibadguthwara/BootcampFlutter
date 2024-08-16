@@ -1,14 +1,97 @@
-import '/pages/inventory/inventory_page.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
 
-class InventoryEditPage extends StatelessWidget {
-  const InventoryEditPage({super.key});
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'inventory_page.dart';
+
+class InventoryEditPage extends StatefulWidget {
+  final String id; // Add an id field to identify the item in Firestore
+  final String name;
+  final int stock;
+  final int price;
+  final String imageUrl;
+  final String description;
+
+  const InventoryEditPage({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.stock,
+    required this.price,
+    required this.imageUrl,
+    required this.description,
+  });
+
+  @override
+  State<InventoryEditPage> createState() => _InventoryEditPageState();
+}
+
+class _InventoryEditPageState extends State<InventoryEditPage> {
+  final _nameController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _stockController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  String? _newImageUrl;
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = widget.name;
+    _priceController.text = widget.price.toString();
+    _stockController.text = widget.stock.toString();
+    _descriptionController.text = widget.description;
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final file = pickedFile.path;
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('food_images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await storageRef.putFile(File(file));
+      final downloadUrl = await storageRef.getDownloadURL();
+      setState(() {
+        _newImageUrl = downloadUrl;
+      });
+    }
+  }
+
+  Future<void> _updateItem() async {
+    final updatedData = {
+      'name': _nameController.text,
+      'price': int.tryParse(_priceController.text) ?? widget.price,
+      'stock': int.tryParse(_stockController.text) ?? widget.stock,
+      'description': _descriptionController.text,
+      'image_url': _newImageUrl ?? widget.imageUrl,
+    };
+
+    await FirebaseFirestore.instance
+        .collection('items')
+        .doc(widget.id)
+        .update(updatedData);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const InventoryPage()),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Berhasil Memperbaharui Data Makanan'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ubah Data Makahan"),
+        title: const Text("Ubah Data Makanan"),
         centerTitle: true,
         automaticallyImplyLeading: true,
       ),
@@ -17,13 +100,12 @@ class InventoryEditPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Image.asset(
-                "assets/images/flutter.png",
-                height: 200,
-              ),
+              _newImageUrl != null
+                  ? Image.network(_newImageUrl!, height: 200)
+                  : Image.network(widget.imageUrl, height: 200),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: _pickImage,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   shape: const RoundedRectangleBorder(
@@ -39,6 +121,7 @@ class InventoryEditPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                controller: _nameController,
                 keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
                   labelText: "Nama Makanan",
@@ -54,6 +137,7 @@ class InventoryEditPage extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: TextFormField(
+                      controller: _priceController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: "Harga Jual",
@@ -68,6 +152,7 @@ class InventoryEditPage extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: TextFormField(
+                      controller: _stockController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: "Stok",
@@ -82,6 +167,7 @@ class InventoryEditPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _descriptionController,
                 minLines: 5,
                 maxLines: 8,
                 decoration: const InputDecoration(
@@ -92,21 +178,7 @@ class InventoryEditPage extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const InventoryPage();
-                      },
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Berhasil Memperbaharui Data Makanan'),
-                    ),
-                  );
-                },
+                onPressed: _updateItem,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   shape: const RoundedRectangleBorder(

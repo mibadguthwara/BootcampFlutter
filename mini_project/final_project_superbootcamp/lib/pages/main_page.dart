@@ -180,16 +180,6 @@ class MainPage extends StatelessWidget {
                     );
                   },
                 ),
-                // const SizedBox(height: 30),
-                // TextButton(
-                //   onPressed: () {
-                //     Navigator.push(context,
-                //         MaterialPageRoute(builder: (context) {
-                //       return const HalamanPercobaan();
-                //     }));
-                //   },
-                //   child: const Text("Halaman Percobaan"),
-                // ),
               ],
             ),
           ),

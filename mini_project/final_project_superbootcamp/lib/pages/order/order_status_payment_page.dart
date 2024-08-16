@@ -7,7 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-// import 'package:printing/printing.dart';
+import 'package:printing/printing.dart';
+
 import 'package:intl/intl.dart';
 import '/widgets/data_time_now_widget.dart';
 import '../../models/item.dart';
@@ -223,6 +224,153 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
     );
   }
 
+  void _printPdf() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) => pw.Padding(
+          padding: const pw.EdgeInsets.all(16),
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
+            children: [
+              pw.Text("WANGISARI KUE",
+                  style: pw.TextStyle(
+                      fontSize: 20, fontWeight: pw.FontWeight.bold)),
+              pw.Text("Sariwangi, Parongpong, Bandung Barat",
+                  style: const pw.TextStyle(fontSize: 14)),
+              pw.SizedBox(height: 10),
+              pw.Text("$_formattedDate | $_formattedTime",
+                  style: const pw.TextStyle(fontSize: 14)),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Nama Pelanggan"),
+                  pw.Text(_displayCustomerName,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Jenis Pembayaran"),
+                  pw.Text(_displayPaymentMethod,
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 10),
+              pw.Divider(height: 3, color: PdfColors.black),
+              ...widget.receiveItems.map(
+                (item) {
+                  final totalPriceForItem = item.price * item.quantity;
+                  return pw.Padding(
+                    padding: const pw.EdgeInsets.symmetric(vertical: 10),
+                    child: pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(item.name,
+                            style: pw.TextStyle(
+                                fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                        pw.SizedBox(height: 3),
+                        pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text("Rp ${item.price} x ${item.quantity}"),
+                            pw.Text(
+                                "Rp ${totalPriceForItem.toStringAsFixed(0)}",
+                                style: pw.TextStyle(
+                                    fontWeight: pw.FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              pw.SizedBox(height: 16),
+              pw.Divider(height: 3, color: PdfColors.black),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Jumlah Makanan"),
+                  pw.Text(widget.totalQuantity.toString(),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Total Pembayaran"),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text("Rp",
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(width: 5),
+                      pw.Text(widget.receiveTotalPrice.toString(),
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Jumlah yang dibayarkan"),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    children: [
+                      pw.Text("Rp",
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(width: 5),
+                      pw.Text(widget.receivePaymnetTotal,
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text("Kembalian"),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text("Rp",
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      pw.SizedBox(width: 5),
+                      pw.Text(widget.receivePaymentChange,
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text("--- LUNAS ---",
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 30),
+              pw.Text("Terima kasih telah melakukan pembelian",
+                  style: const pw.TextStyle(fontSize: 12)),
+              pw.Text("Sampai ketemu kembali",
+                  style: const pw.TextStyle(fontSize: 12),
+                  textAlign: pw.TextAlign.center),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -230,9 +378,10 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
         title: const Text("Status Pembayaran"),
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(onPressed: _printPdf, icon: const Icon(Icons.print)),
           IconButton(
             onPressed: _generatePdf,
-            icon: const Icon(Icons.picture_as_pdf),
+            icon: const Icon(Icons.save),
           ),
           IconButton(
             onPressed: () {
