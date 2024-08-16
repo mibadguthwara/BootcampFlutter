@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'inventory_edit_page.dart';
 import 'inventory_page.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +23,33 @@ class InventoryDetailPage extends StatelessWidget {
     required this.imageUrl,
     required this.id,
   });
+
+  Future<void> _deleteItem(BuildContext context) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection('items');
+      await collection.doc(id).delete();
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return const InventoryPage();
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Berhasil Menghapus Data Makanan'),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal Menghapus Data Makanan: $e'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,20 +162,7 @@ class InventoryDetailPage extends StatelessWidget {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return const InventoryPage();
-                                        },
-                                      ),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Berhasil Menghapus Data Makanan'),
-                                      ),
-                                    );
+                                    _deleteItem(context);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
