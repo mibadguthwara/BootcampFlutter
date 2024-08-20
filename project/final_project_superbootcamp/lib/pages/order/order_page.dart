@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/item.dart';
 import '../main_page.dart';
@@ -118,6 +119,9 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Buat instance NumberFormat dengan format mata uang IDR
+    final currencyFormatter = NumberFormat.currency(
+        locale: 'id_ID', name: 'IDR', decimalDigits: 0, symbol: 'Rp ');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Halaman Pesanan"),
@@ -239,7 +243,7 @@ class _OrderPageState extends State<OrderPage> {
                         const Icon(Icons.payments_outlined),
                         const SizedBox(width: 5),
                         Text(
-                          "Rp ${_totalPrice.toStringAsFixed(0)}",
+                          currencyFormatter.format(_totalPrice),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -279,7 +283,7 @@ class _OrderPageState extends State<OrderPage> {
                                 ),
                               ),
                               Text(
-                                "Rp ${item.price}",
+                                currencyFormatter.format(item.price),
                                 style: const TextStyle(fontSize: 14),
                               ),
                               const SizedBox(height: 5),
@@ -312,7 +316,7 @@ class _OrderPageState extends State<OrderPage> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                "Rp ${totalPriceForItem.toStringAsFixed(0)}",
+                                currencyFormatter.format(totalPriceForItem),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

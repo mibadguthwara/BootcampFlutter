@@ -20,8 +20,8 @@ class OrderStatusPaymentPage extends StatefulWidget {
   final int receiveTotalPrice;
   final String receiveNameCustomer;
   final String receivePaymentMethod;
-  final String receivePaymnetTotal;
-  final String receivePaymentChange;
+  final int receivePaymnetTotal;
+  final int receivePaymentChange;
 
   const OrderStatusPaymentPage({
     super.key,
@@ -39,6 +39,10 @@ class OrderStatusPaymentPage extends StatefulWidget {
 }
 
 class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
+  // Buat instance NumberFormat dengan format mata uang IDR
+  final currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID', name: 'IDR', decimalDigits: 0, symbol: 'Rp ');
+
   final TextEditingController nameCustomerOrder = TextEditingController();
   late String _displayCustomerName;
   late String _displayPaymentMethod;
@@ -116,9 +120,9 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                         pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text("Rp ${item.price} x ${item.quantity}"),
                             pw.Text(
-                                "Rp ${totalPriceForItem.toStringAsFixed(0)}",
+                                "${currencyFormatter.format(item.price)} x ${item.quantity}"),
+                            pw.Text(currencyFormatter.format(totalPriceForItem),
                                 style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold)),
                           ],
@@ -144,16 +148,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Total Pembayaran"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receiveTotalPrice.toString(),
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receiveTotalPrice),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -161,16 +157,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Jumlah yang dibayarkan"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.start,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receivePaymnetTotal,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receivePaymnetTotal),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 10),
@@ -178,16 +166,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Kembalian"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receivePaymentChange,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receivePaymentChange),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -277,9 +257,9 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                         pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text("Rp ${item.price} x ${item.quantity}"),
                             pw.Text(
-                                "Rp ${totalPriceForItem.toStringAsFixed(0)}",
+                                "${currencyFormatter.format(item.price)} x ${item.quantity}"),
+                            pw.Text(currencyFormatter.format(totalPriceForItem),
                                 style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold)),
                           ],
@@ -305,16 +285,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Total Pembayaran"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receiveTotalPrice.toString(),
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receiveTotalPrice),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -322,16 +294,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Jumlah yang dibayarkan"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.start,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receivePaymnetTotal,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receivePaymnetTotal),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 10),
@@ -339,16 +303,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text("Kembalian"),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text("Rp",
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                      pw.SizedBox(width: 5),
-                      pw.Text(widget.receivePaymentChange,
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    ],
-                  ),
+                  pw.Text(currencyFormatter.format(widget.receivePaymentChange),
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                 ],
               ),
               pw.SizedBox(height: 20),
@@ -466,7 +422,8 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Rp ${item.price}"),
+                                      Text(
+                                          currencyFormatter.format(item.price)),
                                       const SizedBox(width: 15),
                                       const Text("x"),
                                       const SizedBox(width: 15),
@@ -474,7 +431,7 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                                     ],
                                   ),
                                   Text(
-                                    "Rp ${totalPriceForItem.toStringAsFixed(0)}",
+                                    currencyFormatter.format(totalPriceForItem),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -503,20 +460,9 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Total Pembayaran"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Rp",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              widget.receiveTotalPrice.toStringAsFixed(0),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Text(
+                          currencyFormatter.format(widget.receiveTotalPrice),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -525,20 +471,9 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Jumlah yang dibayarkan"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Rp",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              widget.receivePaymnetTotal,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Text(
+                          currencyFormatter.format(widget.receivePaymnetTotal),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -547,20 +482,9 @@ class _OrderStatusPaymentPageState extends State<OrderStatusPaymentPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Kembalian"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Rp",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              widget.receivePaymentChange,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Text(
+                          currencyFormatter.format(widget.receivePaymentChange),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),

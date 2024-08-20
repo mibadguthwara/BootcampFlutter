@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '/widgets/time_display_widget.dart';
 import '/widgets/date_display_widget.dart';
 import '../../models/item.dart';
@@ -23,8 +24,31 @@ class OrderPaymentPage extends StatefulWidget {
 }
 
 class _OrderPaymentPageState extends State<OrderPaymentPage> {
+  // Buat instance NumberFormat dengan format mata uang IDR
+  final currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID', name: 'IDR', decimalDigits: 0, symbol: 'Rp ');
+
   final TextEditingController inputPaymentNominal = TextEditingController();
+
+  int _convertedValue = 0;
+  void _convertToInt() {
+    final text = inputPaymentNominal.text;
+    final intValue = int.tryParse(text);
+
+    if (intValue != null) {
+      setState(() {
+        _convertedValue = intValue;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Input tidak valid, harap masukkan angka.')),
+      );
+    }
+  }
+
   final TextEditingController nameCustomerOrder = TextEditingController();
+
   String _selectedValue = 'option1';
 
   int _changePayment = 0;
@@ -131,13 +155,10 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Rp",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          const Icon(Icons.payments_outlined),
                           const SizedBox(width: 5),
                           Text(
-                            widget.totalPrice.toStringAsFixed(0),
+                            currencyFormatter.format(widget.totalPrice),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -218,8 +239,6 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                   labelText: "Nominal (Rp)",
                   focusedBorder: OutlineInputBorder(),
                   border: OutlineInputBorder(),
-                  // prefixIcon: Icon(Icons.monetization_on_sharp),
-
                   isDense: true,
                 ),
               ),
@@ -234,23 +253,13 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
               "Kembalian:",
               style: TextStyle(fontSize: 16),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Rp",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.only(right: 24.0),
-                  child: Text(
-                    "$_changePayment",
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: Text(
+                currencyFormatter.format(_changePayment),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
@@ -258,8 +267,7 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
         ElevatedButton.icon(
           onPressed: _isButtonEnabled
               ? () {
-                  final sendPaymentNominalData = inputPaymentNominal.text;
-
+                  _convertToInt();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -267,8 +275,8 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                         return OrderStatusPaymentPage(
                           receiveNameCustomer: widget.receiveNameCustomer,
                           receivePaymentMethod: "Tunai (Cash)",
-                          receivePaymnetTotal: sendPaymentNominalData,
-                          receivePaymentChange: _changePayment.toString(),
+                          receivePaymnetTotal: _convertedValue,
+                          receivePaymentChange: _changePayment,
                           receiveItems: widget.receiveItems,
                           totalQuantity: widget.totalQuantity,
                           receiveTotalPrice: widget.totalPrice,
@@ -382,7 +390,8 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
         ElevatedButton.icon(
           onPressed: _isButtonEnabled
               ? () {
-                  final sendPaymentNominalData = inputPaymentNominal.text;
+                  // final sendPaymentNominalData = inputPaymentNominal.text;
+                  _convertToInt();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -393,8 +402,8 @@ class _OrderPaymentPageState extends State<OrderPaymentPage> {
                           receiveItems: widget.receiveItems,
                           totalQuantity: widget.totalQuantity,
                           receiveTotalPrice: widget.totalPrice,
-                          receivePaymentChange: 'Rp 0',
-                          receivePaymnetTotal: sendPaymentNominalData,
+                          receivePaymentChange: _changePayment,
+                          receivePaymnetTotal: _convertedValue,
                         );
                       },
                     ),
