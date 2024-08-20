@@ -43,5 +43,5 @@ app.*.map.json
 /android/app/release
 
 
-project\final_project_superbootcamp\android\app\google-services.json
-project\final_project_superbootcamp\lib\helper\firebase_option.dart
+google-services.json
+firebase_option.dart
