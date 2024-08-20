@@ -42,5 +42,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-.google-service
-.firebase_option
+
+project\final_project_superbootcamp\android\app\google-services.json
+project\final_project_superbootcamp\lib\helper\firebase_option.dart
